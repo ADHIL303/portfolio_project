@@ -1,0 +1,137 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+    #loadingSpinner {
+      display: none;
+      width: 40px;
+      height: 40px;
+      border: 5px solid #f3f3f3;
+      border-top: 5px solid #3498db;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 20px auto;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+        p{
+            color:rgb(201, 20, 20) ;
+
+        }
+        .container {
+            width: 100%;
+            max-width: 500px;
+            margin: 50px auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(204, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="date"],
+        select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Registration Form</h2>
+        <form id="register-form"  method="POST" id="myForm">
+            <p>{{ list1 }}</p>
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" value="{{username}}" required><br><br>
+        
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" value="{{email}}" required><br><br>
+        
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required><br><br>
+        
+            <label for="confirm-password">Confirm Password:</label>
+            <input type="password" id="confirm-password" name="confirm-password" required><br><br>
+        
+            <button type="submit" id="submitBtn">Register</button>
+            
+          </form>
+    <div id="loadingSpinner"></div>
+
+        <div class="footer">
+            <p>Already have an account? <a href="http://127.0.0.1:5000/login">Login here</a></p>
+        </div>
+    </div>
+ <script>
+    <script>
+    document.getElementById('myForm').addEventListener('submit', function(e) {
+    document.getElementById('submitBtn').disabled = true;
+    document.getElementById('loadingSpinner').style.display = 'block';
+    });
+    // Client-side password confirmation check
+    document.getElementById("register-form").addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      const password = document.getElementById("password").value;
+      const confirmPassword = document.getElementById("confirm-password").value;
+
+      if (password !== confirmPassword) {
+        alert("Passwords do not match!");
+        return; // Stop form submission
+      }
+
+      // If passwords match, you can proceed to submit the form
+      this.submit(); // Submits the form if validation passes
+    });
+  </script>
+
+</body>
+</html>
+
+        </form>
+    
+
+</body>
+</html>

@@ -1,0 +1,124 @@
+{% extends 'base_nav.html' %}
+
+{% block title %}My Portfolio{% endblock %}
+
+{% block style %}
+<!-- Bootstrap CDN -->
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Custom Animations -->
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+        background: #0f0f0f;
+        color: #fff;
+    }
+
+    .hero {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 120px 10%;
+        min-height: 100vh;
+        animation: fadeIn 1.5s ease-in-out;
+    }
+
+    .hero-text {
+        max-width: 600px;
+    }
+
+    .hero-text h1 {
+        font-size: 4rem;
+        margin-bottom: 20px;
+        animation: slideUp 1s ease-out;
+    }
+
+    .hero-text p {
+        font-size: 1.5rem;
+        line-height: 1.6;
+        color: #aaa;
+        animation: fadeIn 2s ease-in-out;
+    }
+
+    .hero-img img {
+        width: 320px;
+        height: 320px;
+        object-fit: cover;
+        border-radius: 50%;
+        border: 5px solid #1e1e1e;
+        animation: zoomIn 1.5s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    @keyframes slideUp {
+        from { transform: translateY(30px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+    }
+
+    @keyframes zoomIn {
+        from { transform: scale(0.8); opacity: 0; }
+        to { transform: scale(1); opacity: 1; }
+    }
+
+    @media (max-width: 768px) {
+        .hero {
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .hero-img {
+            margin-top: 40px;
+        }
+
+        .hero-text h1 {
+            font-size: 2.5rem;
+        }
+    }
+
+    @media (min-width: 1200px) {
+        .hero {
+            padding: 150px 10%;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block con %}
+<header>
+    <section class="hero container-fluid">
+        <div class="row w-100 align-items-center">
+            <div class="col-md-6 hero-text text-center text-md-left">
+                {% if current_user.is_authenticated %}
+                    <h1>Hello {{ current_user.username }}, <span style="color: #00d8ff;">create with us</span></h1>
+                {% else %}
+                    <h1>Hello Guest, <span style="color: #00d8ff;">create with us</span></h1>
+                {% endif %}
+                <p>
+                    <a href="http://127.0.0.1:5000/edit" class="btn btn-primary btn-lg mt-4">Click here to create your portfolio</a>
+                </p>
+            </div>
+            <div class="col-md-6 hero-img text-center">
+                {% if us and us.image_url %}
+    <img src="{{ url_for('static', filename='img/' + us.image_url) }}" alt="Profile Picture" class="img-fluid rounded-circle" />
+{% endif %}
+
+            </div>
+        </div>
+    </section>
+</header>
+{% endblock %}
+
+<!-- Bootstrap JS and dependencies (optional for Bootstrap JS functionality) -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
