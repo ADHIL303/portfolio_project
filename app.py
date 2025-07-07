@@ -23,7 +23,8 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL")
 if not app.config['SQLALCHEMY_DATABASE_URI']:
     app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:admin@localhost:5432/portfolio"
 
-app.secret_key='SOMNE KEY'
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+
 db.init_app(app)
 mig.init_app(app,db)
 
