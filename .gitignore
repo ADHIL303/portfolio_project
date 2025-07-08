@@ -5,8 +5,7 @@ venv/
 __pycache__/
 *.pyc
 
-# Ignore migration history
-migrations/
+
 
 # Ignore environment variables (secrets)
 .env

@@ -16,15 +16,10 @@ import uuid
 app=Flask(__name__,template_folder='Templates',static_folder='static',static_url_path='/')
 app.config['UPLOAD_FOLDER'] = os.path.join(app.root_path, 'static', 'img')
 
-# Use Render's PostgreSQL URL from environment variable
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL")
 
-# If DATABASE_URL is not found (e.g., during local development), fallback to localhost
-if not app.config['SQLALCHEMY_DATABASE_URI']:
-    app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:admin@localhost:5432/portfolio"
+app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:admin@localhost:5432/portfolio"
 
-app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
-
+app.secret_key='SOMNE KEY'
 db.init_app(app)
 mig.init_app(app,db)
 
