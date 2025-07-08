@@ -71,8 +71,8 @@ def home():
     return render_template('index.html',us=userd)
  else:
     return render_template('index.html')
- @app.route('/init-db')
- def init_db():
+@app.route('/init-db')
+def init_db():
     if os.path.exists("db_init.lock"):
         return "Database already initialized."
 
