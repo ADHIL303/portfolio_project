@@ -10,6 +10,10 @@ import random
 import os
 from werkzeug.utils import secure_filename
 import uuid
+import pdfkit
+
+
+
 
 #___________________________________________________________________________
 
@@ -32,7 +36,7 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 login_manager.login_message = 'Please log in to see this page.'
-
+PDF_CONFIG = pdfkit.configuration(wkhtmltopdf="C:/Program Files/wkhtmltopdf/bin/wkhtmltopdf.exe")
 @login_manager.user_loader
 def load_user(uid):
     return user.query.get(uid)
@@ -410,6 +414,35 @@ def forget():
         else:
            return render_template('forget.html',p="you enter invlide data from our database")
     return render_template('forget.html')
+@app.route('/download-pdf')
+@login_required
+def download_pdf():
+
+    user_id = current_user.username
+    # Fetch existing entrie
+    skills = Skill.query.filter_by(user_id=user_id).all()
+    educations = Education.query.filter_by(user_id=user_id).all()
+    projects = Project.query.filter_by(user_id=user_id).all()
+    links = Link.query.filter_by(user_id=user_id).all()
+    detail = Detail.query.filter_by(user_id=user_id).first()
+
+
+    
+    # render HTML as string
+    rendered = render_template('th2.html', skills2=skills, educations=educations, projects=projects, links=links, detail=detail)
+
+    # generate PDF
+    pdf = pdfkit.from_string(rendered, False, configuration=PDF_CONFIG)
+
+    # return PDF as download
+    return (
+        pdf,
+        200,
+        {
+            'Content-Type': 'application/pdf',
+            'Content-Disposition': f'attachment; filename="{user_id}_portfolio.pdf"',
+        }
+    )
 
 
 
