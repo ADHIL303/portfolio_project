@@ -54,11 +54,16 @@
                     <input type="date" name="dob" class="form-control mb-2" value="{{ detail.date_of_birth if detail else 'date of Birth' }}"required>
                      <label style="color:blue;font_weight:bold;">
                         Profession
-                    </label>
-                    <input type="text" name="prof" class="form-control mb-2" placeholder="Profession" value="{{ detail.prof if detail else 'Profession' }}"required>
-                     <label style="color:blue;font_weight:bold;">
-                        Image
-                    </label>
+                  <label style="color:blue;font-weight:bold;">Image</label>
+
+                   {% if detail and detail.image_url %}
+                     <div class="mb-2">
+                      <img src="{{ url_for('static', filename='img/' ~ detail.image_url) }}" alt="Current Image" width="120" class="rounded">
+                    </div>
+                   {% endif %}
+
+                   <input type="file" name="image" class="form-control mb-2" accept="image/*">
+                     </label>
                     <input type="file" name="image" class="form-control mb-2" accept="image/*" value="{{ url_for('static', filename='img/' ~ detail.image_url) }}" required>
                      <label style="color:blue;font_weight:bold;">
                         Number
