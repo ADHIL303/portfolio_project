@@ -17,9 +17,12 @@ app=Flask(__name__,template_folder='Templates',static_folder='static',static_url
 app.config['UPLOAD_FOLDER'] = os.path.join(app.root_path, 'static', 'img')
 
 
-app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:admin@localhost:5432/portfolio"
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL")
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-app.secret_key='SOMNE KEY'
+
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
+
 db.init_app(app)
 mig.init_app(app,db)
 
@@ -68,6 +71,20 @@ def home():
     return render_template('index.html',us=userd)
  else:
     return render_template('index.html')
+ @app.route('/init-db')
+ def init_db():
+    if os.path.exists("db_init.lock"):
+        return "Database already initialized."
+
+    with app.app_context():
+        db.create_all()
+
+    # Create a lock file so it can't run again
+    with open("db_init.lock", "w") as f:
+        f.write("initialized")
+
+    return "✅ Database initialized successfully!"
+
 
 
 @app.route('/register', methods=['GET', 'POST'])
