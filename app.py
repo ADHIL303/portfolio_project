@@ -10,7 +10,7 @@ import random
 import os
 from werkzeug.utils import secure_filename
 import uuid
-import pdfkit
+
 
 
 
@@ -19,6 +19,7 @@ import pdfkit
 
 app=Flask(__name__,template_folder='Templates',static_folder='static',static_url_path='/')
 app.config['UPLOAD_FOLDER'] = os.path.join(app.root_path, 'static', 'img')
+
 
 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL")
@@ -36,7 +37,7 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 login_manager.login_message = 'Please log in to see this page.'
-PDF_CONFIG = pdfkit.configuration(wkhtmltopdf="C:/Program Files/wkhtmltopdf/bin/wkhtmltopdf.exe")
+#PDF_CONFIG = pdfkit.configuration(wkhtmltopdf="C:/Program Files/wkhtmltopdf/bin/wkhtmltopdf.exe")
 @login_manager.user_loader
 def load_user(uid):
     return user.query.get(uid)
@@ -109,7 +110,7 @@ def registetr():
         session['username'] = username
         session['email'] = email
         session['password'] = hash_password
-        session['token'] = 13
+        session['token'] = "13"
         return redirect(url_for('verfy'))
 
        
@@ -149,11 +150,11 @@ def verfy():
         correct_otp = session.get('otp')
         attempts_left = session.get('attempts', 0)
         email = session.get('email')
-        token = session.get('token')
+        token = session.get("token")
         if user_input == correct_otp:
           
             # Create related entries
-            if  token==13:
+            if  token=="13":
                 new_user = user(username=username, email=email, password=password)
                 db.session.add(new_user)
                 db.session.commit()
@@ -166,9 +167,11 @@ def verfy():
                 session.pop('otp', None)
                 session.pop('attempts', None)
                 session.pop('email', None)
-                session.pop('token',None)
+                session.pop("token",None)
                 return redirect('/login')
-            elif token == '14':
+            elif token == "14":
+                print("i am inside the box ")
+                print(password)
                 updated_user = user.query.filter_by(email=email).first()
                 if updated_user:
                     updated_user.password = password  # already hashed in session
@@ -178,7 +181,7 @@ def verfy():
                     session.pop('otp', None)
                     session.pop('attempts', None)
                     session.pop('email', None)
-                    session.pop('token', None)
+                    session.pop("token", None)
                     session.pop('username', None)
                     session.pop('password', None)
 
@@ -238,7 +241,7 @@ def logout():
 
 """///////////////////////  working process ///////////////////////////////////////"""
 
-@app.route('/edit', methods=['GET', 'POST'])
+@app.route('/form', methods=['GET', 'POST'])
 @login_required
 def edit_portfolio():
 
@@ -358,15 +361,11 @@ def data():
 
 @app.route('/sqluser')
 def sql():
-    if current_user.is_authenticated:
-       peo=current_user.username
-       people=user.query.filter_by(username=peo).first_or_404()
-
-
-       return render_template('sqlite.html',people=people)
-    else:
-      return "login frist"
-    
+      
+     users = user.query.all()
+     for user11 in users:
+         print(user11.uid, user11.email,user11.username,user11.password) 
+     return "is ready"
 @app.route('/sqlskill')
 def sqlskill():
      skill = Skill.query.all()
@@ -400,20 +399,22 @@ def forget():
            session['username'] = username
            session['email'] = oo
            session['password'] =hash_password 
-           session['token'] ='14'
+           session['token'] ="14"
            return redirect(url_for('verfy'))
           
         elif emailvalid!=None:
            oo=emailvalid.email
            session['username'] = username
            session['email'] = oo
-           session['password'] = password
-           session['token'] =14
+           session['password'] =hash_password
+           session['token'] ="14"
            return redirect(url_for('verfy'))
         
         else:
            return render_template('forget.html',p="you enter invlide data from our database")
+ 
     return render_template('forget.html')
+"""
 @app.route('/download-pdf')
 @login_required
 def download_pdf():
@@ -444,6 +445,7 @@ def download_pdf():
         }
     )
 
+"""
 
 
 
