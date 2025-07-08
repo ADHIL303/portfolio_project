@@ -65,26 +65,13 @@ bcrypt = Bcrypt()
 #url side______________________________________________________________________
 @app.route('/')
 def home():
-    if current_user.is_authenticated:
-        current_user2 = current_user.username
-        userd = Detail.query.filter_by(user_id=current_user2).first_or_404()
-        return render_template('index.html', us=userd)
-    else:
-        return render_template('index.html')
-
-# ✅ Correctly define this OUTSIDE of any function
-@app.route('/init-db')
-def init_db():
-    if os.path.exists("db_init.lock"):
-        return "Database already initialized."
-
-    with app.app_context():
-        db.create_all()
-
-    with open("db_init.lock", "w") as f:
-        f.write("initialized")
-
-    return "✅ Database initialized successfully!"
+ if current_user.is_authenticated:
+    current_user2=current_user.username
+    userd=Detail.query.filter_by(user_id=current_user2).first_or_404()
+    return render_template('index.html',us=userd)
+ else:
+    return render_template('index.html')
+    
 
 
 
