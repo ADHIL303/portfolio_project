@@ -407,10 +407,6 @@ def forget():
 
 
 
-from flask_migrate import upgrade
-
-with app.app_context():
-    upgrade()
 
 
     
