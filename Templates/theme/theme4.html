@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{{ detail.name }} - Resume</title>
+<style>
+  body {
+    font-family: Calibri, sans-serif;
+    margin: 40px;
+    color: #000;
+    line-height: 1.5;
+    background: #fff;
+  }
+  h1, h2 {
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
+  h1 {
+    font-size: 24px;
+  }
+  h2 {
+    font-size: 18px;
+    margin-top: 24px;
+  }
+  .photo {
+    float: right;
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-left: 20px;
+  }
+  .download-btn {
+    margin-bottom: 20px;
+    display: inline-block;
+    padding: 8px 12px;
+    background: #333;
+    color: #fff;
+    text-decoration: none;
+    font-size: 14px;
+    border-radius: 4px;
+  }
+  ul {
+    margin: 0 0 0 20px;
+  }
+  a {
+    color: black;
+    text-decoration: underline;
+  }
+</style>
+</head>
+<body>
+
+<a href="#" onclick="window.print()" class="download-btn">Download PDF</a>
+
+{% if detail.image_url %}
+<img src="{{ url_for('static', filename='img/' + detail.image_url) }}" class="photo" alt="Photo" />
+{% endif %}
+
+<h1>{{ detail.name }}</h1>
+<p><strong>Email:</strong> {{ current_user.email }} | <strong>DOB:</strong> {{ detail.date_of_birth }} | <strong>{{ detail.prof }}</strong></p>
+
+{% if detail.description %}
+<p><em>{{ detail.description }}</em></p>
+{% endif %}
+
+<section>
+  <h2>Education</h2>
+  <ul>
+    {% for edu in educations %}
+    <li>{{ edu.degree }}, {{ edu.institution }} ({{ edu.year }})</li>
+    {% endfor %}
+  </ul>
+</section>
+
+<section>
+  <h2>Projects</h2>
+  <ul>
+    {% for proj in projects %}
+    <li><strong>{{ proj.title }}:</strong> {{ proj.description }}</li>
+    {% endfor %}
+  </ul>
+</section>
+
+<section>
+  <h2>Skills</h2>
+  <ul>
+    {% for s in skills2 %}
+    <li>{{ s.name }}</li>
+    {% endfor %}
+  </ul>
+</section>
+
+<section>
+  <h2>Links</h2>
+  <ul>
+    {% for l in links %}
+    <li><a href="{{ l.url }}">{{ l.type }}</a></li>
+    {% endfor %}
+  </ul>
+</section>
+
+</body>
+</html>

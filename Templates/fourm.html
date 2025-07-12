@@ -1,199 +1,225 @@
+{% extends 'base_nav.html' %}
 
-    {% extends 'base_nav.html'%}
-    
-        {% block style %}
-        <!DOCTYPE html>
-        <html lang="en">
-        <head>
-            <meta charset="UTF-8">
-            <title>Edit Portfolio</title>
-            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    
-        </head>
-        <style>
-            
-            .card-3d {
-                transition: transform 0.5s;
-                box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-                border-radius: 1rem;
-            }
-            .card-3d:hover {
-                transform: scale(1.03);
-            }
-            .form-section {
-                margin-bottom: 2rem;
-            }
-            .remove-btn {
-                color: red;
-                cursor: pointer;
-                margin-left: 10px;
-            }
-        </style>
+{% block style %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Portfolio</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<style>
+    .card-3d {
+        transition: transform 0.5s;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        border-radius: 1rem;
+    }
+    .card-3d:hover {
+        transform: scale(1.03);
+    }
+    .form-section {
+        margin-bottom: 2rem;
+    }
+    .remove-btn {
+        color: red;
+        cursor: pointer;
+        margin-left: 10px;
+    }
+</style>
+{% endblock %}
 
-    
-    {% endblock %}
-    {% block con %}
+{% block con %}
+<body class="bg-light">
+<div class="container mt-5">
+    <h2 class="mb-4 text-center">Edit Your Portfolio</h2>
 
+    <form method="POST" enctype="multipart/form-data">
 
-   
-    <body class="bg-light">
-        <div class="container mt-5">
-            <h2 class="mb-4 text-center">Edit Your Portfolio</h2>
-    
-            <form method="POST" enctype="multipart/form-data">
-                <!-- detail -->
-                   <div class="card card-3d form-section p-4"> 
-                    <h4>About You</h4>
-                    <label style="color:blue;font_weight:bold;">
-                        Full Name
-                    </label>
-                    <input type="text" name="name" class="form-control mb-2" placeholder="Full Name" value="{{ detail.name if detail else 'Full name' }}"required>
-                     <label style="color:blue;font_weight:bold;">
-                        Date_of_birth
-                    </label>
-                    <input type="date" name="dob" class="form-control mb-2" value="{{ detail.date_of_birth if detail else 'date of Birth' }}"required>
-                     <label style="color:blue;font_weight:bold;">
-                        Profession
-                  <label style="color:blue;font-weight:bold;">Image</label>
+        <!-- About You -->
+        <div class="card card-3d form-section p-4">
+            <h4>About You</h4>
 
-                   {% if detail and detail.image_url %}
-                     <div class="mb-2">
-                      <img src="{{ url_for('static', filename='img/' ~ detail.image_url) }}" alt="Current Image" width="120" class="rounded">
-                    </div>
-                   {% endif %}
+            <label style="color:blue;font-weight:bold;">Full Name</label>
+            <input type="text" name="name" class="form-control mb-2" 
+                   placeholder="Full Name" 
+                   value="{{ detail.name if detail and detail.name else '' }}" required>
 
-                   <input type="file" name="image" class="form-control mb-2" accept="image/*">
-                     </label>
-                    <input type="file" name="image" class="form-control mb-2" accept="image/*" value="{{ url_for('static', filename='img/' ~ detail.image_url) }}" required>
-                     <label style="color:blue;font_weight:bold;">
-                        Number
-                    </label>
-                    <input type="number" name="number" class="form-control mb-2" placeholder="+91" value="{{ detail.phone_number if detail else 'Enter you phone number' }}"required>
-                     <label style="color:blue;font_weight:bold;">
-                        Location
-                    </label>
-                    <input type="text" name="location" class="form-control mb-2" placeholder="location" value="{{ detail.location if detail else 'Enter your current location' }}"required>
-                     <label style="color:blue;font_weight:bold;">
-                        Description
-                    </label>
-                    <input type="description" name="description" class="form-control" placeholder="About Yourself" value="{{ detail.description if detail else 'About Yourself' }}"required>
-                   </div>
-                     <!-- Skills -->
-                <div class="card card-3d form-section p-4">
-                    <h4>Skills</h4>
-                    <div id="skills-container">
-                        {% for skill in skill1 %}
-                            <div class="d-flex mb-2">
-                                <input type="text" name="skills[]" class="form-control" value="{{ skill.name }}">
-                                <span class="remove-btn" onclick="this.parentElement.remove()">✖</span>
-                            </div>
-                        {% endfor %}
-                    </div>
-                    <button type="button" class="btn btn-sm btn-outline-primary" onclick="addSkill()">Add Skill</button>
-                </div>
-    
-                <!-- Education -->
-                <div class="card card-3d form-section p-4">
-                    <h4>Education</h4>
-                    <div id="education-container">
-                        {% for edu in educations %}
-                            <div class="row mb-2">
-                                <div class="col"><input type="text" name="degree[]" class="form-control" placeholder="Degree" value="{{ edu.degree }}"></div>
-                                <div class="col"><input type="text" name="institution[]" class="form-control" placeholder="Institution" value="{{ edu.institution }}"></div>
-                                <div class="col"><input type="text" name="year[]" class="form-control" placeholder="Year" value="{{ edu.year }}"></div>
-                                <div class="col-auto"><span class="remove-btn" onclick="this.parentElement.parentElement.remove()">✖</span></div>
-                            </div>
-                        {% endfor %}
-                    </div>
-                    <button type="button" class="btn btn-sm btn-outline-primary" onclick="addEducation()">Add Education</button>
-                </div>
-    
-                <!-- Projects -->
-                <div class="card card-3d form-section p-4">
-                    <h4>Projects</h4>
-                    <div id="projects-container">
-                        {% for proj in projects %}
-                            <div class="mb-2">
-                                <input type="text" name="project_title[]" class="form-control mb-1" placeholder="Project Title" value="{{ proj.title }}">
-                                <textarea name="project_description[]" class="form-control mb-1" placeholder="Project Description">{{ proj.description }}</textarea>
-                                <span class="remove-btn" onclick="this.parentElement.remove()">✖</span>
-                            </div>
-                        {% endfor %}
-                    </div>
-                    <button type="button" class="btn btn-sm btn-outline-primary" onclick="addProject()">Add Project</button>
-                </div>
-    
-                <!-- Links -->
-                <div class="card card-3d form-section p-4">
-                    <h4>Links</h4>
-                    <div id="links-container">
-                        {% for link in links %}
-                            <div class="row mb-2">
-                                <div class="col"><input type="text" name="link_type[]" class="form-control" placeholder="Type (e.g., GitHub)" value="{{ link.type }}"></div>
-                                <div class="col"><input type="url" name="link_url[]" class="form-control" placeholder="URL" value="{{ link.url }}"></div>
-                                <div class="col-auto"><span class="remove-btn" onclick="this.parentElement.parentElement.remove()">✖</span></div>
-                            </div>
-                        {% endfor %}
-                    </div>
-                    <button type="button" class="btn btn-sm btn-outline-primary" onclick="addLink()">Add Link</button>
-                </div>
+            <label style="color:blue;font-weight:bold;">Date of Birth</label>
+            <input type="date" name="dob" class="form-control mb-2" 
+                   value="{{ detail.date_of_birth if detail and detail.date_of_birth else '' }}" required>
 
-    
-                
-              
-    
-                <div class="text-center">
-                    <button type="submit" class="btn btn-success btn-lg mt-3">Save Portfolio</button>
-                </div>
-            </form>
+            <label style="color:blue;font-weight:bold;">Profession</label>
+            <input type="text" name="prof" class="form-control mb-2" 
+                   placeholder="Profession" 
+                   value="{{ detail.prof if detail and detail.prof else '' }}" required>
+
+            {% if detail and detail.image_url %}
+                <label style="color:blue;font-weight:bold;">Current Image</label><br>
+                <img src="{{ url_for('static', filename='img/' ~ detail.image_url) }}"
+                alt="Profile Image"
+                class="img-thumbnail mb-3"
+                style="max-height:120px; max-width:120px; object-fit:cover;">
+
+            {% endif %}
+            <label style="color:blue;font-weight:bold;">Upload New Image</label>
+            <input type="file" name="image" class="form-control mb-2" accept="image/*">
+
+            <label style="color:blue;font-weight:bold;">Phone Number</label>
+            <input type="number" name="number" class="form-control mb-2" 
+                   placeholder="+91" 
+                   value="{{ detail.phone_number if detail and detail.phone_number else '' }}" required>
+
+            <label style="color:blue;font-weight:bold;">Location</label>
+            <input type="text" name="location" class="form-control mb-2" 
+                   placeholder="Location" 
+                   value="{{ detail.location if detail and detail.location else '' }}" required>
+
+            <label style="color:blue;font-weight:bold;">About Yourself</label>
+            <input type="text" name="description" class="form-control mb-2" 
+                   placeholder="About Yourself" 
+                   value="{{ detail.description if detail and detail.description else '' }}" required>
         </div>
-    
-        <script>
-            function addSkill() {
-                const container = document.getElementById('skills-container');
-                container.insertAdjacentHTML('beforeend',
-                    `<div class="d-flex mb-2">
-                        <input type="text" name="skills[]" class="form-control">
+
+        <!-- Skills -->
+        <div class="card card-3d form-section p-4">
+            <h4>Skills</h4>
+            <div id="skills-container">
+                {% if skill1 %}
+                    {% for skill in skill1 %}
+                        <div class="d-flex mb-2">
+                            <input type="text" name="skills[]" class="form-control" value="{{ skill.name }}">
+                            <span class="remove-btn" onclick="this.parentElement.remove()">✖</span>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="d-flex mb-2">
+                        <input type="text" name="skills[]" class="form-control" placeholder="Skill">
                         <span class="remove-btn" onclick="this.parentElement.remove()">✖</span>
-                    </div>`);
-            }
-    
-            function addEducation() {
-                const container = document.getElementById('education-container');
-                container.insertAdjacentHTML('beforeend',
-                    `<div class="row mb-2">
+                    </div>
+                {% endif %}
+            </div>
+            <button type="button" class="btn btn-sm btn-outline-primary" onclick="addSkill()">Add Skill</button>
+        </div>
+
+        <!-- Education -->
+        <div class="card card-3d form-section p-4">
+            <h4>Education</h4>
+            <div id="education-container">
+                {% if educations %}
+                    {% for edu in educations %}
+                        <div class="row mb-2">
+                            <div class="col"><input type="text" name="degree[]" class="form-control" placeholder="Degree" value="{{ edu.degree }}"></div>
+                            <div class="col"><input type="text" name="institution[]" class="form-control" placeholder="Institution" value="{{ edu.institution }}"></div>
+                            <div class="col"><input type="text" name="year[]" class="form-control" placeholder="Year" value="{{ edu.year }}"></div>
+                            <div class="col-auto"><span class="remove-btn" onclick="this.parentElement.parentElement.remove()">✖</span></div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="row mb-2">
                         <div class="col"><input type="text" name="degree[]" class="form-control" placeholder="Degree"></div>
                         <div class="col"><input type="text" name="institution[]" class="form-control" placeholder="Institution"></div>
                         <div class="col"><input type="text" name="year[]" class="form-control" placeholder="Year"></div>
                         <div class="col-auto"><span class="remove-btn" onclick="this.parentElement.parentElement.remove()">✖</span></div>
-                    </div>`);
-            }
-    
-            function addProject() {
-                const container = document.getElementById('projects-container');
-                container.insertAdjacentHTML('beforeend',
-                    `<div class="mb-2">
+                    </div>
+                {% endif %}
+            </div>
+            <button type="button" class="btn btn-sm btn-outline-primary" onclick="addEducation()">Add Education</button>
+        </div>
+
+        <!-- Projects -->
+        <div class="card card-3d form-section p-4">
+            <h4>Projects</h4>
+            <div id="projects-container">
+                {% if projects %}
+                    {% for proj in projects %}
+                        <div class="mb-2">
+                            <input type="text" name="project_title[]" class="form-control mb-1" placeholder="Project Title" value="{{ proj.title }}">
+                            <textarea name="project_description[]" class="form-control mb-1" placeholder="Project Description">{{ proj.description }}</textarea>
+                            <span class="remove-btn" onclick="this.parentElement.remove()">✖</span>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="mb-2">
                         <input type="text" name="project_title[]" class="form-control mb-1" placeholder="Project Title">
                         <textarea name="project_description[]" class="form-control mb-1" placeholder="Project Description"></textarea>
                         <span class="remove-btn" onclick="this.parentElement.remove()">✖</span>
-                    </div>`);
-            }
-    
-            function addLink() {
-                const container = document.getElementById('links-container');
-                container.insertAdjacentHTML('beforeend',
-                    `<div class="row mb-2">
-                        <div class="col"><input type="text" name="link_type[]" class="form-control" placeholder="Type"></div>
+                    </div>
+                {% endif %}
+            </div>
+            <button type="button" class="btn btn-sm btn-outline-primary" onclick="addProject()">Add Project</button>
+        </div>
+
+        <!-- Links -->
+        <div class="card card-3d form-section p-4">
+            <h4>Links</h4>
+            <div id="links-container">
+                {% if links %}
+                    {% for link in links %}
+                        <div class="row mb-2">
+                            <div class="col"><input type="text" name="link_type[]" class="form-control" placeholder="Type (e.g., GitHub)" value="{{ link.type }}"></div>
+                            <div class="col"><input type="url" name="link_url[]" class="form-control" placeholder="URL" value="{{ link.url }}"></div>
+                            <div class="col-auto"><span class="remove-btn" onclick="this.parentElement.parentElement.remove()">✖</span></div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="row mb-2">
+                        <div class="col"><input type="text" name="link_type[]" class="form-control" placeholder="Type (e.g., GitHub)"></div>
                         <div class="col"><input type="url" name="link_url[]" class="form-control" placeholder="URL"></div>
                         <div class="col-auto"><span class="remove-btn" onclick="this.parentElement.parentElement.remove()">✖</span></div>
-                    </div>`);
-            }
-        </script>
-    </body>
-    </html>
-    
-      
-    {% endblock %}
+                    </div>
+                {% endif %}
+            </div>
+            <button type="button" class="btn btn-sm btn-outline-primary" onclick="addLink()">Add Link</button>
+        </div>
 
+        <div class="text-center">
+            <button type="submit" class="btn btn-success btn-lg mt-3">Save Portfolio</button>
+        </div>
+
+    </form>
+</div>
+
+<script>
+    function addSkill() {
+        const container = document.getElementById('skills-container');
+        container.insertAdjacentHTML('beforeend',
+            `<div class="d-flex mb-2">
+                <input type="text" name="skills[]" class="form-control">
+                <span class="remove-btn" onclick="this.parentElement.remove()">✖</span>
+            </div>`);
+    }
+
+    function addEducation() {
+        const container = document.getElementById('education-container');
+        container.insertAdjacentHTML('beforeend',
+            `<div class="row mb-2">
+                <div class="col"><input type="text" name="degree[]" class="form-control" placeholder="Degree"></div>
+                <div class="col"><input type="text" name="institution[]" class="form-control" placeholder="Institution"></div>
+                <div class="col"><input type="text" name="year[]" class="form-control" placeholder="Year"></div>
+                <div class="col-auto"><span class="remove-btn" onclick="this.parentElement.parentElement.remove()">✖</span></div>
+            </div>`);
+    }
+
+    function addProject() {
+        const container = document.getElementById('projects-container');
+        container.insertAdjacentHTML('beforeend',
+            `<div class="mb-2">
+                <input type="text" name="project_title[]" class="form-control mb-1" placeholder="Project Title">
+                <textarea name="project_description[]" class="form-control mb-1" placeholder="Project Description"></textarea>
+                <span class="remove-btn" onclick="this.parentElement.remove()">✖</span>
+            </div>`);
+    }
+
+    function addLink() {
+        const container = document.getElementById('links-container');
+        container.insertAdjacentHTML('beforeend',
+            `<div class="row mb-2">
+                <div class="col"><input type="text" name="link_type[]" class="form-control" placeholder="Type"></div>
+                <div class="col"><input type="url" name="link_url[]" class="form-control" placeholder="URL"></div>
+                <div class="col-auto"><span class="remove-btn" onclick="this.parentElement.parentElement.remove()">✖</span></div>
+            </div>`);
+    }
+</script>
 </body>
 </html>
+{% endblock %}

@@ -25,23 +25,23 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto">
         <li class="nav-item">
-          <a class="nav-link active" href="">HOME</a>
+          <a class="nav-link active" href="http://127.0.0.1:5000/">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="https://portfolio-project-4c8i.onrender.com/register">REGISTER</a>
+          <a class="nav-link" href="http://127.0.0.1:5000/register">Register</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="https://portfolio-project-4c8i.onrender.com/form">FORM</a>
+          <a class="nav-link" href="http://127.0.0.1:5000/edit">Form</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="https://portfolio-project-4c8i.onrender.com/theame">RESUME</a>
+          <a class="nav-link" href="http://127.0.0.1:5000/theme">Theame</a>
         </li>
            {% if current_user.is_authenticated %}
                     <li class="nav-item">
-          <a class="nav-link" href="https://portfolio-project-4c8i.onrender.com/logout">Logout</a>
+          <a class="nav-link" href="http://127.0.0.1:5000/logout">Logout</a>
           {% else %}
                     <li class="nav-item">
-          <a class="nav-link" href="https://portfolio-project-4c8i.onrender.com/login">Login</a>
+          <a class="nav-link" href="http://127.0.0.1:5000/login">Login</a>
                 {% endif %}
          
         </li>

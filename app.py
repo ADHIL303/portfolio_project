@@ -326,9 +326,9 @@ def edit_portfolio():
   
 
     
-@app.route('/theame')
+@app.route('/theme')
 @login_required
-def theame():  
+def theme():  
     user_id = current_user.username
     # Fetch existing entrie
     skills = Skill.query.filter_by(user_id=user_id).all()
@@ -414,6 +414,31 @@ def forget():
            return render_template('forget.html',p="you enter invlide data from our database")
  
     return render_template('forget.html')
+@app.route('/resume/<theme_name>')
+@login_required
+def render_theme(theme_name):
+    user_id = current_user.username  # This assumes 'username' is the user_id in your DB
+
+    # Fetch user data
+    skills = Skill.query.filter_by(user_id=user_id).all()
+    educations = Education.query.filter_by(user_id=user_id).all()
+    projects = Project.query.filter_by(user_id=user_id).all()
+    links = Link.query.filter_by(user_id=user_id).all()
+    detail = Detail.query.filter_by(user_id=user_id).first()
+
+    try:
+        # Dynamically render the selected theme's HTML template
+        return render_template(
+            f'theme/{theme_name}.html',
+            skills2=skills,
+            educations=educations,
+            projects=projects,
+            links=links,
+            detail=detail
+        )
+    except:
+        # If the template doesn't exist, fallback or show error
+        return f"Theme '{theme_name}' not found.", 404
 """
 @app.route('/download-pdf')
 @login_required

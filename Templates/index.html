@@ -101,10 +101,10 @@
                 {% if current_user.is_authenticated %}
                     <h1>Hello {{ current_user.username }}, <span style="color: #00d8ff;">create with us</span></h1>
                 {% else %}
-                    <h1>Helo Guest, <span style="color: #00d8ff;">create with us</span></h1>
+                    <h1>Hello Guest, <span style="color: #00d8ff;">create with us</span></h1>
                 {% endif %}
                 <p>
-                    <a href="http://127.0.0.1:5000/form" class="btn btn-primary btn-lg mt-4">Click here to create your portfolio</a>
+                    <a href="/edit" class="btn btn-primary btn-lg mt-4">Click here to create your portfolio</a>
                 </p>
             </div>
             <div class="col-md-6 hero-img text-center">

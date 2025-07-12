@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{{ detail.name }} - Resume</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 40px;
+    background: #fff;
+    color: #000;
+  }
+  h1, h2 {
+    font-weight: bold;
+  }
+  h1 {
+    font-size: 28px;
+  }
+  h2 {
+    font-size: 20px;
+    margin-top: 24px;
+    border-bottom: 1px solid #000;
+    padding-bottom: 4px;
+  }
+  ul {
+    margin-left: 20px;
+  }
+  .download-btn {
+    margin-bottom: 15px;
+    padding: 8px 12px;
+    background: #000;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  a {
+    color: black;
+    text-decoration: underline;
+  }
+</style>
+</head>
+<body>
+
+<button class="download-btn" onclick="window.print()">Download PDF</button>
+
+<h1>{{ detail.name }}</h1>
+<p><strong>Email:</strong> {{ current_user.email }}<br />
+<strong>DOB:</strong> {{ detail.date_of_birth }}<br />
+<strong>Profession:</strong> {{ detail.prof }}</p>
+
+{% if detail.description %}
+<p><em>{{ detail.description }}</em></p>
+{% endif %}
+
+<section>
+  <h2>Education</h2>
+  <ul>
+    {% for edu in educations %}
+    <li>{{ edu.degree }} - {{ edu.institution }} ({{ edu.year }})</li>
+    {% endfor %}
+  </ul>
+</section>
+
+<section>
+  <h2>Projects</h2>
+  <ul>
+    {% for proj in projects %}
+    <li><strong>{{ proj.title }}:</strong> {{ proj.description }}</li>
+    {% endfor %}
+  </ul>
+</section>
+
+<section>
+  <h2>Skills</h2>
+  <ul>
+    {% for s in skills2 %}
+    <li>{{ s.name }}</li>
+    {% endfor %}
+  </ul>
+</section>
+
+<section>
+  <h2>Links</h2>
+  <ul>
+    {% for l in links %}
+    <li><strong>{{ l.type }}:</strong> <a href="{{ l.url }}">{{ l.url }}</a></li>
+    {% endfor %}
+  </ul>
+</section>
+
+</body>
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{{ detail.name }} - Resume</title>
+<style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 40px;
+    background: #f9f9f9;
+    color: #333;
+  }
+  .container {
+    background: #fff;
+    padding: 30px;
+    max-width: 800px;
+    margin: auto;
+    border-radius: 6px;
+  }
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .photo {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  h1 {
+    font-size: 26px;
+    color: #003366;
+    margin-bottom: 5px;
+  }
+  h2 {
+    color: #003366;
+    margin-top: 24px;
+    border-bottom: 2px solid #003366;
+    padding-bottom: 4px;
+  }
+  .download {
+    text-decoration: none;
+    padding: 6px 10px;
+    background: #003366;
+    color: #fff;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  ul {
+    margin-left: 20px;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <div>
+      <h1>{{ detail.name }}</h1>
+      <p><strong>{{ detail.prof }}</strong><br>{{ current_user.email }} | {{ detail.date_of_birth }}</p>
+    </div>
+    {% if detail.image_url %}
+    <img src="{{ url_for('static', filename='img/' + detail.image_url) }}" class="photo" alt="Photo" />
+    {% endif %}
+    <a href="#" onclick="window.print()" class="download">Download PDF</a>
+  </div>
+
+  {% if detail.description %}
+  <p><em>{{ detail.description }}</em></p>
+  {% endif %}
+
+  <section>
+    <h2>Education</h2>
+    <ul>
+      {% for edu in educations %}
+      <li>{{ edu.degree }} at {{ edu.institution }} ({{ edu.year }})</li>
+      {% endfor %}
+    </ul>
+  </section>
+
+  <section>
+    <h2>Projects</h2>
+    <ul>
+      {% for proj in projects %}
+      <li><strong>{{ proj.title }}:</strong> {{ proj.description }}</li>
+      {% endfor %}
+    </ul>
+  </section>
+
+  <section>
+    <h2>Skills</h2>
+    <ul>
+      {% for s in skills2 %}
+      <li>{{ s.name }}</li>
+      {% endfor %}
+    </ul>
+  </section>
+
+  <section>
+    <h2>Links</h2>
+    <ul>
+      {% for l in links %}
+      <li><a href="{{ l.url }}">{{ l.type }}</a></li>
+      {% endfor %}
+    </ul>
+  </section>
+</div>
+
+</body>
+</html>
