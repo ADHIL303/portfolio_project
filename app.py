@@ -18,7 +18,7 @@ import uuid
 #___________________________________________________________________________
 
 app=Flask(__name__,template_folder='Templates',static_folder='static',static_url_path='/')
-app.config['UPLOAD_FOLDER'] = os.path.join(app.root_path, 'static', 'img')
+app.config['UPLOAD_FOLDER'] = os.path.join(app.root_path, 'static', 'img' )
 
 
 
