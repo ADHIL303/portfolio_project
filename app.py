@@ -318,7 +318,7 @@ def edit_portfolio():
           
 
         db.session.commit()
-        return redirect('theame')
+        return redirect('theme')
 
     return render_template('fourm.html', skill1=skills, educations=educations, projects=projects,
                            links=links, detail=detail)
